@@ -1,4 +1,4 @@
-const Proyecto = require("../models/project");
+const {Proyecto, Task} = require("../models/index");
 
 async function traerProyectos(req, res) {
   try {
@@ -12,7 +12,8 @@ async function traerProyectos(req, res) {
 async function traerProyecto(req, res) {
   const { id } = req.params;
   try {
-    const proyecto = await Proyecto.findByPk(id);
+    const proyecto = await Proyecto.findOne({ where: { id } ,include: {
+      model: Task}});
     if (proyecto) {
       res.status(200).json(proyecto);
     } else {
@@ -25,11 +26,10 @@ async function traerProyecto(req, res) {
 
 async function crearProyecto(req, res) {
   try {
-    const { titulo, descripcion } = req.body;
-    const proyecto = await Proyecto.create({ titulo, descripcion });
+    const proyecto = await Proyecto.create(req.body);
     res.status(201).json(proyecto);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el proyecto" });
+    res.status(500).json({error: error.message});
   }
 }
 

@@ -1,9 +1,5 @@
 const express = require("express");
 const app = express();
-const { engine } = require("express-handlebars");
-const myconnection = require("express-myconnection");
-const session = require("express-session");
-const mysql = require("mysql2");
 const { db_connection } = require("./src/config/database");
 require("dotenv").config();
 
@@ -28,9 +24,7 @@ app.use(require("./src/routes/project"));
 app.use(require("./src/routes/task"));
 app.use(require("./src/routes/users"));
 
-app.get("/", (req, res) => {
-  console.log("El server esta conectado en http://localhost:" + puerto + "/ ");
-});
+
 
 //Conexión a la base de datos
 db_connection();

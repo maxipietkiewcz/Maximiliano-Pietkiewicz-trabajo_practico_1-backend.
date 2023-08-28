@@ -1,9 +1,8 @@
-const Tarea = require("../models/task");
+const {Task} = require("../models/index");
 
 async function crearTarea(req, res) {
   try {
-    const { titulo, descripcion } = req.body;
-    const tarea = await Tarea.create({ titulo, descripcion });
+    const tarea = await Task.create(req.body);
     res.status(201).json(tarea);
   } catch (error) {
     res.status(500).json({ error: "Error al crear la tarea" });

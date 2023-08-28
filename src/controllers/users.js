@@ -1,19 +1,26 @@
-const Usuario = require("../models/users");
+const {User, Proyecto} = require("../models/index");
 
 async function crearUsuario(req, res) {
-  try {
-    const { nombre_usuario, correo, contraseña } = req.body;
-    const usuario = await Usuario.create({
-      nombre_usuario,
-      correo,
-      contraseña,
-    });
+  try {  
+    const usuario = await User.create(req.body);
     res.status(201).json(usuario);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el usuario" });
+    res.status(500).json({error: error.message});
   }
+  
 }
+
+const listarUsuarios = async (req, res) => {
+  try {
+    const usuarios = await User.findAll({ include: Proyecto });
+
+    res.status(200).json(usuarios);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 module.exports = {
   crearUsuario,
+  listarUsuarios
 };
